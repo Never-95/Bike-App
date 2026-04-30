@@ -2,7 +2,7 @@ import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Text, View } from "react-native";
 
-export default function ProfileScreen() {
+export default function GameScreen() {
   const colorScheme = useColorScheme();
 
   return (
@@ -14,7 +14,7 @@ export default function ProfileScreen() {
         alignItems: "center",
       }}
     >
-      <Text>Profile Screen</Text>
+      <Text>Game Screen</Text>
     </View>
   );
 }

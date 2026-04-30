@@ -1,60 +1,52 @@
-import { Text, View } from "react-native";
+import RecentWorkout from "@/components/elements/recent-workout";
+import WeekActivity from "@/components/elements/week-activity";
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function HomeScreen() {
+  const colorScheme = useColorScheme();
+
+  const styles = StyleSheet.create({
+    headerText: {
+      fontSize: 25,
+      fontWeight: "bold",
+      color: Colors[colorScheme ?? "light"].text,
+    },
+    baseText: {
+      fontSize: 15,
+      backgroundColor: Colors[colorScheme ?? "light"].text,
+    },
+  });
+
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: "#564b67",
+        backgroundColor: Colors[colorScheme ?? "light"].mainBackground,
+        alignItems: "center",
+        paddingTop: 50,
+        paddingBottom: 40,
       }}
     >
       <View
         style={{
-          flex: 0.88,
+          flex: 0.2,
+          justifyContent: "center",
         }}
       >
-        <Text>Content</Text>
+        <Text style={styles.headerText}>Welcome (PUT NAME HERE)</Text>
       </View>
 
       <View
         style={{
-          flex: 0.12,
-          flexDirection: "row",
-          backgroundColor: "#2f2347",
+          flex: 0.8,
+          width: 320,
+          gap: 30,
         }}
       >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#5db74b",
-          }}
-        >
-          <Text>Home</Text>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#a9b74b",
-          }}
-        >
-          <Text>Game</Text>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#b76d4b",
-          }}
-        >
-          <Text>Workout</Text>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#4b86b7",
-          }}
-        >
-          <Text>Profile</Text>
-        </View>
+        <RecentWorkout />
+        <WeekActivity />
       </View>
     </View>
   );

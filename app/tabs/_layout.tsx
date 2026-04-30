@@ -8,12 +8,23 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
+  const iconSize = 40;
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].iconSelected,
+        tabBarStyle: {
+          backgroundColor: Colors[colorScheme ?? "light"].tabBackground,
+          height: 85,
+          paddingTop: 5,
+        },
+        tabBarIconStyle: {
+          width: iconSize,
+          height: iconSize,
+        },
+        tabBarInactiveTintColor: Colors[colorScheme ?? "light"].iconDefault,
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarButton: HapticTab,
       }}
     >
@@ -22,7 +33,29 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <IconSymbol size={iconSize} name="house.fill" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="game"
+        options={{
+          title: "Game",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol
+              size={iconSize}
+              name="gamecontroller.fill"
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="addworkout"
+        options={{
+          title: "Add Workout",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={iconSize} name="plus" color={color} />
           ),
         }}
       />
@@ -31,7 +64,7 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <IconSymbol size={iconSize} name="person.fill" color={color} />
           ),
         }}
       />
