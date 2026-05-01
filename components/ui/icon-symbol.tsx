@@ -23,6 +23,7 @@ const MAPPING = {
   "person.fill": "person",
   "arrow.swap": "swap-calls",
   "flame.fill": "whatshot",
+  stopwatch: "access-alarm",
 } as IconMapping;
 
 /**

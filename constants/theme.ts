@@ -10,7 +10,7 @@ export const Colors = {
     text: "#000000",
     mainBackground: "#cfc6dd",
     contentBackground: "#9782b6",
-    contentBorder: "#ff0000",
+    contentBorder: "#aca5ca",
     tabBackground: "#967ea9",
     iconDefault: "#200b21",
     iconSelected: "#a1199b",
