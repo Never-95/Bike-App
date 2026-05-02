@@ -5,21 +5,27 @@
 
 import { Platform } from "react-native";
 
+const best = "#fbf318";
+
 export const Colors = {
   light: {
     text: "#000000",
+    textOpposite: "#ffffff",
+    best: best,
     mainBackground: "#cfc6dd",
-    contentBackground: "#9782b6",
-    contentBorder: "#aca5ca",
+    contentBackground: "#bdaad8",
+    contentBorder: "#8c75a1",
     tabBackground: "#967ea9",
     iconDefault: "#200b21",
     iconSelected: "#a1199b",
   },
   dark: {
     text: "#ffffff",
+    textOpposite: "#000000",
+    best: best,
     mainBackground: "#564b67",
-    contentBackground: "#9782b6",
-    contentBorder: "#aca5ca",
+    contentBackground: "#74599b",
+    contentBorder: "#3e3857",
     tabBackground: "#3f2c4e",
     iconDefault: "#ffffff",
     iconSelected: "#e068b2",

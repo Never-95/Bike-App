@@ -26,7 +26,7 @@ export default function HomeScreen() {
         backgroundColor: Colors[colorScheme ?? "light"].mainBackground,
         alignItems: "center",
         paddingTop: 50,
-        paddingBottom: 40,
+        paddingBottom: 30,
       }}
     >
       <View
@@ -35,13 +35,13 @@ export default function HomeScreen() {
           justifyContent: "center",
         }}
       >
-        <Text style={styles.headerText}>Welcome (PUT NAME HERE)</Text>
+        <Text style={styles.headerText}>Welcome Matthew!</Text>
       </View>
 
       <View
         style={{
           flex: 0.8,
-          width: 320,
+          width: 350,
           gap: 30,
         }}
       >

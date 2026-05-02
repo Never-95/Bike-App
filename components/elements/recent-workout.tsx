@@ -13,15 +13,14 @@ export default function RecentWorkout() {
       color: Colors[colorScheme ?? "light"].text,
     },
     baseText: {
-      fontSize: 15,
+      fontSize: 16,
       color: Colors[colorScheme ?? "light"].text,
     },
     smallHighlight: {
       backgroundColor: Colors[colorScheme ?? "light"].contentBorder,
       borderRadius: 10,
-      padding: 8,
-      width: 160,
-      height: 45,
+      width: 155,
+      height: 30,
       alignItems: "center",
       justifyContent: "center",
     },
