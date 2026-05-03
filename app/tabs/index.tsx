@@ -2,14 +2,44 @@ import RecentWorkout from "@/components/elements/recent-workout";
 import WeekActivity from "@/components/elements/week-activity";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { supabase } from "../../utils/supabase";
+
+type Todo = {
+  id: number;
+  name: string;
+};
 
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
 
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    const getTodos = async () => {
+      try {
+        const { data: todos, error } = await supabase.from("todos").select();
+
+        if (error) {
+          console.error("Error fetching todos:", error.message);
+          return;
+        }
+
+        if (todos && todos.length > 0) {
+          setTodos(todos);
+        }
+      } catch (error: any) {
+        console.error("Error fetching todos:", error.message);
+      }
+    };
+
+    getTodos();
+  }, []);
+
   const styles = StyleSheet.create({
     headerText: {
-      fontSize: 25,
+      fontSize: 30,
       fontWeight: "bold",
       color: Colors[colorScheme ?? "light"].text,
     },
@@ -36,6 +66,17 @@ export default function HomeScreen() {
         }}
       >
         <Text style={styles.headerText}>Welcome Matthew!</Text>
+      </View>
+
+      <View
+        style={{ flex: 0.1, justifyContent: "center", alignItems: "center" }}
+      >
+        <Text>Todo List</Text>
+        <FlatList
+          data={todos}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <Text key={item.id}>{item.name}</Text>}
+        />
       </View>
 
       <View
