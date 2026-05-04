@@ -3,7 +3,7 @@ import WeekActivity from "@/components/elements/week-activity";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { supabase } from "../../utils/supabase";
 
 type Todo = {
@@ -67,18 +67,6 @@ export default function HomeScreen() {
       >
         <Text style={styles.headerText}>Welcome Matthew!</Text>
       </View>
-
-      <View
-        style={{ flex: 0.1, justifyContent: "center", alignItems: "center" }}
-      >
-        <Text>Todo List</Text>
-        <FlatList
-          data={todos}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <Text key={item.id}>{item.name}</Text>}
-        />
-      </View>
-
       <View
         style={{
           flex: 0.8,

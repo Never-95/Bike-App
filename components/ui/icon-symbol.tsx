@@ -24,6 +24,8 @@ const MAPPING = {
   "arrow.swap": "swap-calls",
   "flame.fill": "whatshot",
   stopwatch: "access-alarm",
+  calendar: "date-range",
+  photo: "insert-photo",
 } as IconMapping;
 
 /**

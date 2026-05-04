@@ -1,7 +1,7 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function WeekActivity() {
   const colorScheme = useColorScheme();
@@ -66,7 +66,7 @@ export default function WeekActivity() {
     },
   });
 
-  const iconSize = 28;
+  const iconSize = 30;
 
   return (
     <View
@@ -80,47 +80,39 @@ export default function WeekActivity() {
         gap: 5,
       }}
     >
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, gap: 10 }}>
         <View style={styles.smallHighlight}>
           <Text style={styles.headerText}>Week Activity</Text>
         </View>
 
-        <View style={{ flex: 1, flexDirection: "row" }}>
-          <View style={{ flex: 1.5 }}>
-            <View style={styles.row}>
-              <IconSymbol
-                size={iconSize}
-                name="arrow.swap"
-                color={Colors[colorScheme ?? "light"].iconDefault}
-              />
-              <Text style={styles.baseText}>5.5 Miles</Text>
-            </View>
-            <View style={styles.row}>
-              <IconSymbol
-                size={iconSize}
-                name="flame.fill"
-                color={Colors[colorScheme ?? "light"].iconDefault}
-              />
-              <Text style={styles.baseText}>302 Calories</Text>
-            </View>
-            <View style={styles.row}>
-              <IconSymbol
-                size={iconSize}
-                name="stopwatch"
-                color={Colors[colorScheme ?? "light"].iconDefault}
-              />
-              <Text style={styles.baseText}>32 Minutes</Text>
-            </View>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Image
-              source={require("../../assets/images/react-logo.png")}
-              height={150}
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <IconSymbol
+              size={iconSize}
+              name="arrow.swap"
+              color={Colors[colorScheme ?? "light"].iconDefault}
             />
+            <Text style={styles.baseText}>5.5 Miles</Text>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <IconSymbol
+              size={iconSize}
+              name="flame.fill"
+              color={Colors[colorScheme ?? "light"].iconDefault}
+            />
+            <Text style={styles.baseText}>5.5 Miles</Text>
+          </View>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <IconSymbol
+              size={iconSize}
+              name="stopwatch"
+              color={Colors[colorScheme ?? "light"].iconDefault}
+            />
+            <Text style={styles.baseText}>5.5 Miles</Text>
           </View>
         </View>
       </View>
-      <View style={{ flex: 0.9 }}>
+      <View style={{ flex: 1 }}>
         <View style={[styles.smallHighlight, { width: 85 }]}>
           <Text style={styles.headerText}>Activity</Text>
         </View>
@@ -148,7 +140,7 @@ export default function WeekActivity() {
           </View>
         </View>
       </View>
-      <View style={{ flex: 0.8, gap: 10 }}>
+      <View style={{ flex: 1, gap: 10 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           <View style={[styles.smallHighlight, { width: 100 }]}>
             <Text style={styles.headerText}>Best day:</Text>

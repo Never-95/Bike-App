@@ -11,6 +11,7 @@ export const Colors = {
   light: {
     text: "#000000",
     textOpposite: "#ffffff",
+    textHighlight: "#d33adc",
     best: best,
     mainBackground: "#cfc6dd",
     contentBackground: "#bdaad8",
@@ -22,6 +23,7 @@ export const Colors = {
   dark: {
     text: "#ffffff",
     textOpposite: "#000000",
+    textHighlight: "#f985ff",
     best: best,
     mainBackground: "#564b67",
     contentBackground: "#74599b",

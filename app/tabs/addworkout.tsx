@@ -2,43 +2,53 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Button,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import { supabase } from "../../utils/supabase";
 
 export default function AddWorkoutScreen() {
   const colorScheme = useColorScheme();
   const { control, handleSubmit } = useForm();
-  const onSubmit = (data: any) => console.log(data);
-  const [image, setImage] = useState<string | null>(null);
-  const [date, setDate] = useState(new Date());
-  const [show, setShow] = useState(false);
 
-  const pickImage = async () => {
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permissionResult.granted) {
-      Alert.alert(
-        "Permission required",
-        "Permission to access the media library is required.",
-      );
-      return;
-    }
+  const onSubmit = async (data: any) => {
+    try {
+      const parsedData = {
+        ...data,
+        distance: parseInt(data.distance) || 0,
+        calories: parseInt(data.calories) || 0,
+        time: parseInt(data.time) || 0,
+      };
 
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+      console.log(parsedData);
 
-    console.log(result);
+      const { error } = await supabase.from("workouts").insert([
+        {
+          date: parsedData.date,
+          distance: parsedData.distance,
+          calories: parsedData.calories,
+          time: parsedData.time,
+        },
+      ]);
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      if (error) throw error;
+
+      Alert.alert("Success", "Workout saved!");
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Something went wrong");
     }
   };
+  const [image, setImage] = useState<string | null>(null);
+  const [show, setShow] = useState(false);
 
   const styles = StyleSheet.create({
     headerText: {
@@ -47,18 +57,21 @@ export default function AddWorkoutScreen() {
       color: Colors[colorScheme ?? "light"].text,
     },
     baseText: {
-      fontSize: 16,
+      fontSize: 22,
       color: Colors[colorScheme ?? "light"].text,
     },
+    highlightText: {
+      fontSize: 22,
+      color: Colors[colorScheme ?? "light"].textHighlight,
+    },
     row: {
-      flex: 1,
       flexDirection: "row",
       gap: 10,
       alignItems: "center",
     },
   });
 
-  const iconSize = 28;
+  const iconSize = 50;
 
   return (
     <View
@@ -87,81 +100,128 @@ export default function AddWorkoutScreen() {
           borderColor: Colors[colorScheme ?? "light"].contentBorder,
           borderWidth: 5,
           borderRadius: 20,
-          padding: 10,
-          gap: 10,
+          padding: 20,
+          gap: 20,
         }}
       >
         <Controller
           control={control}
-          name="image"
+          name="date"
+          defaultValue={new Date()}
           render={({ field: { onChange, value } }) => (
-            <View>
-              <Button
-                title="Pick an image from camera roll"
-                onPress={pickImage}
+            <View style={styles.row}>
+              <IconSymbol
+                size={iconSize}
+                name="calendar"
+                color={Colors[colorScheme ?? "light"].iconDefault}
               />
-              {image && (
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 200, height: 200 }}
+              {show && (
+                <DateTimePicker
+                  value={value}
+                  mode="date"
+                  onChange={(event, selectedDate) => {
+                    setShow(false);
+
+                    if (selectedDate) {
+                      onChange(selectedDate);
+                    }
+                  }}
                 />
               )}
+              <Pressable onPress={() => setShow(true)}>
+                <Text style={styles.highlightText}>{value.toDateString()}</Text>
+              </Pressable>
             </View>
           )}
         />
         <Controller
           control={control}
-          name="date"
+          name="distance"
+          defaultValue={0}
           render={({ field: { onChange, value } }) => (
-            <View>
-              <Button title="Pick Date" onPress={() => setShow(true)} />
-              {show && (
-                <DateTimePicker
-                  value={date}
-                  mode="date"
-                  onChange={(event, selectedDate) => {
-                    setShow(false);
-                    if (selectedDate) setDate(selectedDate);
-                  }}
-                />
-              )}
-            </View>
-          )}
-        />
-
-        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-
-        <View style={{ flex: 1, flexDirection: "row" }}>
-          <View style={{ flex: 1.5 }}>
             <View style={styles.row}>
               <IconSymbol
                 size={iconSize}
                 name="arrow.swap"
                 color={Colors[colorScheme ?? "light"].iconDefault}
               />
-              <Text style={styles.baseText}>5.5 Miles</Text>
+              <TextInput
+                style={styles.highlightText}
+                value={String(value)}
+                placeholder="0"
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  if (text === "") {
+                    onChange("");
+                  } else {
+                    onChange(text);
+                  }
+                }}
+              />
+              <Text style={styles.baseText}>Miles</Text>
             </View>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="calories"
+          defaultValue={0}
+          render={({ field: { onChange, value } }) => (
             <View style={styles.row}>
               <IconSymbol
                 size={iconSize}
                 name="flame.fill"
                 color={Colors[colorScheme ?? "light"].iconDefault}
               />
-              <Text style={styles.baseText}>302 Calories</Text>
+              <TextInput
+                style={styles.highlightText}
+                value={String(value)}
+                placeholder="0"
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  if (text === "") {
+                    onChange("");
+                  } else {
+                    onChange(text);
+                  }
+                }}
+              />
+              <Text style={styles.baseText}>Calories</Text>
             </View>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="time"
+          defaultValue={0}
+          render={({ field: { onChange, value } }) => (
             <View style={styles.row}>
               <IconSymbol
                 size={iconSize}
                 name="stopwatch"
                 color={Colors[colorScheme ?? "light"].iconDefault}
               />
-              <Text style={styles.baseText}>32 Minutes</Text>
+              <TextInput
+                style={styles.highlightText}
+                value={String(value)}
+                placeholder="0"
+                keyboardType="numeric"
+                onChangeText={(text) => {
+                  if (text === "") {
+                    onChange("");
+                  } else {
+                    onChange(text);
+                  }
+                }}
+              />
+              <Text style={styles.baseText}>Minutes</Text>
             </View>
-            <View style={{ flex: 1, justifyContent: "flex-end" }}>
-              <Text style={styles.baseText}>13th January 2026</Text>
-            </View>
-          </View>
-        </View>
+          )}
+        />
+
+        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
       </View>
     </View>
   );

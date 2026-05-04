@@ -1,10 +1,22 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { Image, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { supabase } from "../../utils/supabase";
+
+type Workout = {
+  id: number;
+  date: string;
+  distance: number;
+  calories: number;
+  time: number;
+};
 
 export default function RecentWorkout() {
   const colorScheme = useColorScheme();
+  const [workout, setWorkout] = useState<Workout | null>(null);
+  const iconSize = 30;
 
   const styles = StyleSheet.create({
     headerText: {
@@ -13,7 +25,7 @@ export default function RecentWorkout() {
       color: Colors[colorScheme ?? "light"].text,
     },
     baseText: {
-      fontSize: 16,
+      fontSize: 18,
       color: Colors[colorScheme ?? "light"].text,
     },
     smallHighlight: {
@@ -32,7 +44,29 @@ export default function RecentWorkout() {
     },
   });
 
-  const iconSize = 28;
+  useEffect(() => {
+    const getRecentWorkout = async () => {
+      try {
+        const { data: workout, error } = await supabase
+          .from("workouts")
+          .select()
+          .order("date", { ascending: false })
+          .limit(1)
+          .single();
+
+        if (error) {
+          console.error("Error fetching workout:", error.message);
+          return;
+        }
+
+        setWorkout(workout);
+      } catch (error: any) {
+        console.error("Error fetching workout:", error.message);
+      }
+    };
+
+    getRecentWorkout();
+  }, []);
 
   return (
     <View
@@ -58,7 +92,9 @@ export default function RecentWorkout() {
               name="arrow.swap"
               color={Colors[colorScheme ?? "light"].iconDefault}
             />
-            <Text style={styles.baseText}>5.5 Miles</Text>
+            <Text style={styles.baseText}>
+              {workout ? `${workout.distance}` : "N/A"} Miles
+            </Text>
           </View>
           <View style={styles.row}>
             <IconSymbol
@@ -66,7 +102,9 @@ export default function RecentWorkout() {
               name="flame.fill"
               color={Colors[colorScheme ?? "light"].iconDefault}
             />
-            <Text style={styles.baseText}>302 Calories</Text>
+            <Text style={styles.baseText}>
+              {workout ? `${workout.calories}` : "N/A"} Calories
+            </Text>
           </View>
           <View style={styles.row}>
             <IconSymbol
@@ -74,17 +112,39 @@ export default function RecentWorkout() {
               name="stopwatch"
               color={Colors[colorScheme ?? "light"].iconDefault}
             />
-            <Text style={styles.baseText}>32 Minutes</Text>
-          </View>
-          <View style={{ flex: 1, justifyContent: "flex-end" }}>
-            <Text style={styles.baseText}>13th January 2026</Text>
+            <Text style={styles.baseText}>
+              {workout ? `${workout.time}` : "N/A"} Minutes
+            </Text>
           </View>
         </View>
-        <View style={{ flex: 1 }}>
-          <Image
-            source={require("../../assets/images/react-logo.png")}
-            height={150}
-          />
+        <View style={{ flex: 1.4 }}>
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            <IconSymbol
+              size={40}
+              name="calendar"
+              color={Colors[colorScheme ?? "light"].iconDefault}
+            />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Text style={[styles.baseText, { fontSize: 15 }]}>
+              {workout
+                ? new Date(workout.date).toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })
+                : "N/A"}
+            </Text>
+          </View>
         </View>
       </View>
     </View>
