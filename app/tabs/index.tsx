@@ -2,40 +2,11 @@ import RecentWorkout from "@/components/elements/recent-workout";
 import WeekActivity from "@/components/elements/week-activity";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { supabase } from "../../utils/supabase";
-
-type Todo = {
-  id: number;
-  name: string;
-};
 
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
-
-  const [todos, setTodos] = useState<Todo[]>([]);
-
-  useEffect(() => {
-    const getTodos = async () => {
-      try {
-        const { data: todos, error } = await supabase.from("todos").select();
-
-        if (error) {
-          console.error("Error fetching todos:", error.message);
-          return;
-        }
-
-        if (todos && todos.length > 0) {
-          setTodos(todos);
-        }
-      } catch (error: any) {
-        console.error("Error fetching todos:", error.message);
-      }
-    };
-
-    getTodos();
-  }, []);
 
   const styles = StyleSheet.create({
     headerText: {

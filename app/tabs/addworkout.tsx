@@ -85,7 +85,7 @@ export default function AddWorkoutScreen() {
     >
       <View
         style={{
-          flex: 0.2,
+          height: 200,
           justifyContent: "center",
         }}
       >
@@ -94,7 +94,6 @@ export default function AddWorkoutScreen() {
 
       <View
         style={{
-          flex: 0.8,
           width: 350,
           backgroundColor: Colors[colorScheme ?? "light"].contentBackground,
           borderColor: Colors[colorScheme ?? "light"].contentBorder,
