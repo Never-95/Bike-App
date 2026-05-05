@@ -16,6 +16,7 @@ type Workout = {
 
 export default function ProfileScreen() {
   const colorScheme = useColorScheme();
+  const [stars, setStars] = useState(0);
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const totalDistance = workouts.reduce((sum, w) => sum + w.distance, 0);
   const totalCalories = workouts.reduce((sum, w) => sum + w.calories, 0);
@@ -85,6 +86,23 @@ export default function ProfileScreen() {
 
   useFocusEffect(
     useCallback(() => {
+      const loadStars = async () => {
+        const { data, error } = await supabase
+          .from("stars")
+          .select("star_amount")
+          .single();
+
+        if (!error && data) {
+          setStars(data.star_amount);
+        }
+      };
+
+      loadStars();
+    }, []),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
       const getAllWorkouts = async () => {
         try {
           const { data: workouts, error } = await supabase
@@ -97,7 +115,6 @@ export default function ProfileScreen() {
           }
 
           setWorkouts(workouts || []);
-          console.log("All workout fetch", workouts);
         } catch (error: any) {
           console.error("Error fetching workouts:", error.message);
         }
@@ -165,8 +182,8 @@ export default function ProfileScreen() {
           ]}
         />
         <View style={styles.progressContent}>
-          <Text style={[styles.baseText, { fontSize: 30 }]}>Level {level}</Text>
-          <Text style={[styles.baseText, { fontSize: 17 }]}>
+          <Text style={{ fontSize: 30, color: "#fff" }}>Level {level}</Text>
+          <Text style={{ fontSize: 17, color: "#fff" }}>
             {currentXP}/{maxXP} Active days to level up
           </Text>
         </View>
@@ -191,8 +208,7 @@ export default function ProfileScreen() {
           color={Colors[colorScheme ?? "light"].iconDefault}
         />
         <View style={{ alignItems: "center" }}>
-          <Text style={[styles.baseText, { fontSize: 30 }]}>207 Stars</Text>
-          <Text style={[styles.baseText, { fontSize: 17 }]}>765 in total</Text>
+          <Text style={[styles.baseText, { fontSize: 30 }]}>{stars} Stars</Text>
         </View>
       </View>
 

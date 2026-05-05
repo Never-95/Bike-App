@@ -150,7 +150,6 @@ export default function WeekActivity() {
         }
 
         setWorkouts(data || []);
-        console.log("Week activity fetch", workouts);
       };
 
       getWeeklyWorkouts();
@@ -164,7 +163,6 @@ export default function WeekActivity() {
     day = day === 0 ? 6 : day - 1;
 
     activityByDay[day] += w.distance;
-    console.log("Activities:", activityByDay);
   });
 
   const hasActivity = (index: number) => activityByDay[index] > 0;

@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "bike-app",
-    "slug": "bike-app",
+    "name": "CycleDeck",
+    "slug": "cycledeck",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/CycleDeckIcon.png",
     "scheme": "bikeapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -40,7 +40,8 @@
           }
         }
       ],
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

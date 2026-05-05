@@ -9,6 +9,25 @@ export const StaticColors = {
   best: "#fbf318",
   starYellow: "#d4cc30",
   levelOrange: "#cc8743",
+  buttonBlue: "#19b3d9",
+};
+
+export const RarityStyles = {
+  commonMain: "#6ab98c",
+  commonTint: "#2cd045",
+  commonText: "#24602d",
+  uncommonMain: "#5e9ad2",
+  uncommonTint: "#10c1e1",
+  uncommonText: "#24355b",
+  rareMain: "#c75757",
+  rareTint: "#e13434",
+  rareText: "#501f1f",
+  epicMain: "#9f55e0",
+  epicTint: "#8f1ade",
+  epicText: "#442460",
+  legendaryMain: "#dbd75b",
+  legendaryTint: "#e6a038",
+  legendaryText: "#523720",
 };
 
 export const Colors = {

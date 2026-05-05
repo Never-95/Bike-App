@@ -1,12 +1,11 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/theme";
+import { Colors, StaticColors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Alert,
-  Button,
   Pressable,
   StyleSheet,
   Text,
@@ -23,6 +22,29 @@ export default function AddWorkoutScreen() {
     return date.toISOString().split("T")[0];
   };
 
+  const updateStars = async (earnedStars: number) => {
+    const { data, error: fetchError } = await supabase
+      .from("stars")
+      .select("star_amount")
+      .single();
+
+    if (fetchError || !data) {
+      console.log("Fetching stars error:", fetchError?.message);
+      return;
+    }
+
+    const newTotalStars = data.star_amount + earnedStars;
+
+    const { error: updateError } = await supabase
+      .from("stars")
+      .update({ star_amount: newTotalStars })
+      .eq("id", 1);
+
+    if (updateError) {
+      console.log("Update stars error:", updateError.message);
+    }
+  };
+
   const onSubmit = async (data: any) => {
     try {
       const parsedData = {
@@ -31,8 +53,6 @@ export default function AddWorkoutScreen() {
         calories: parseInt(data.calories) || 0,
         time: parseInt(data.time) || 0,
       };
-
-      console.log(parsedData);
 
       const { error } = await supabase.from("workouts").insert([
         {
@@ -44,6 +64,8 @@ export default function AddWorkoutScreen() {
       ]);
 
       if (error) throw error;
+
+      await updateStars(parsedData.distance);
 
       Alert.alert("Success", "Workout saved!");
     } catch (err) {
@@ -224,7 +246,25 @@ export default function AddWorkoutScreen() {
           )}
         />
 
-        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+        <Pressable onPress={handleSubmit(onSubmit)}>
+          <View
+            style={{
+              backgroundColor: StaticColors.buttonBlue,
+              justifyContent: "center",
+              alignItems: "center",
+              borderWidth: 5,
+              borderRadius: 20,
+              borderColor: Colors[colorScheme ?? "light"].contentBorder,
+              padding: 7,
+            }}
+          >
+            <Text
+              style={[styles.baseText, { fontSize: 20, fontWeight: "bold" }]}
+            >
+              Submit
+            </Text>
+          </View>
+        </Pressable>
       </View>
     </View>
   );
