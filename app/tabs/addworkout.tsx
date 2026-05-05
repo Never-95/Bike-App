@@ -19,6 +19,10 @@ export default function AddWorkoutScreen() {
   const colorScheme = useColorScheme();
   const { control, handleSubmit } = useForm();
 
+  const formatDate = (date: Date) => {
+    return date.toISOString().split("T")[0];
+  };
+
   const onSubmit = async (data: any) => {
     try {
       const parsedData = {
@@ -32,7 +36,7 @@ export default function AddWorkoutScreen() {
 
       const { error } = await supabase.from("workouts").insert([
         {
-          date: parsedData.date,
+          date: formatDate(parsedData.date),
           distance: parsedData.distance,
           calories: parsedData.calories,
           time: parsedData.time,
@@ -47,7 +51,7 @@ export default function AddWorkoutScreen() {
       Alert.alert("Error", "Something went wrong");
     }
   };
-  const [image, setImage] = useState<string | null>(null);
+
   const [show, setShow] = useState(false);
 
   const styles = StyleSheet.create({

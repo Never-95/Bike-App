@@ -26,6 +26,7 @@ const MAPPING = {
   stopwatch: "access-alarm",
   calendar: "date-range",
   photo: "insert-photo",
+  star: "star-border",
 } as IconMapping;
 
 /**

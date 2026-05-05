@@ -1,7 +1,8 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { supabase } from "../../utils/supabase";
 
@@ -44,29 +45,31 @@ export default function RecentWorkout() {
     },
   });
 
-  useEffect(() => {
-    const getRecentWorkout = async () => {
-      try {
-        const { data: workout, error } = await supabase
-          .from("workouts")
-          .select()
-          .order("date", { ascending: false })
-          .limit(1)
-          .single();
+  useFocusEffect(
+    useCallback(() => {
+      const getRecentWorkout = async () => {
+        try {
+          const { data: workout, error } = await supabase
+            .from("workouts")
+            .select()
+            .order("date", { ascending: false })
+            .limit(1)
+            .single();
 
-        if (error) {
+          if (error) {
+            console.error("Error fetching workout:", error.message);
+            return;
+          }
+
+          setWorkout(workout);
+        } catch (error: any) {
           console.error("Error fetching workout:", error.message);
-          return;
         }
+      };
 
-        setWorkout(workout);
-      } catch (error: any) {
-        console.error("Error fetching workout:", error.message);
-      }
-    };
-
-    getRecentWorkout();
-  }, []);
+      getRecentWorkout();
+    }, []),
+  );
 
   return (
     <View

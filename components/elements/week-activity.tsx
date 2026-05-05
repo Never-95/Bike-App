@@ -1,7 +1,8 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/theme";
+import { Colors, StaticColors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { supabase } from "../../utils/supabase";
 
@@ -35,7 +36,7 @@ export default function WeekActivity() {
     },
     bestText: {
       fontSize: 16,
-      color: Colors[colorScheme ?? "light"].best,
+      color: StaticColors.best,
     },
     smallHighlight: {
       backgroundColor: Colors[colorScheme ?? "light"].contentBorder,
@@ -131,28 +132,30 @@ export default function WeekActivity() {
     return { start, end };
   };
 
-  useEffect(() => {
-    const getWeeklyWorkouts = async () => {
-      const { start, end } = getWeekRange();
+  useFocusEffect(
+    useCallback(() => {
+      const getWeeklyWorkouts = async () => {
+        const { start, end } = getWeekRange();
 
-      const { data, error } = await supabase
-        .from("workouts")
-        .select("*")
-        .gte("date", start.toISOString())
-        .lte("date", end.toISOString())
-        .order("date", { ascending: true });
+        const { data, error } = await supabase
+          .from("workouts")
+          .select("*")
+          .gte("date", start.toISOString())
+          .lte("date", end.toISOString())
+          .order("date", { ascending: true });
 
-      if (error) {
-        console.error(error);
-        return;
-      }
+        if (error) {
+          console.error(error);
+          return;
+        }
 
-      setWorkouts(data || []);
-      console.log("Week activity fetch", workouts);
-    };
+        setWorkouts(data || []);
+        console.log("Week activity fetch", workouts);
+      };
 
-    getWeeklyWorkouts();
-  }, []);
+      getWeeklyWorkouts();
+    }, []),
+  );
 
   workouts.forEach((w) => {
     const d = new Date(w.date);
@@ -312,7 +315,7 @@ export default function WeekActivity() {
             <IconSymbol
               size={iconSize}
               name="arrow.swap"
-              color={Colors[colorScheme ?? "light"].best}
+              color={StaticColors.best}
             />
             <Text style={styles.bestText}>{bestDayTotals.distance} Miles</Text>
           </View>
@@ -320,7 +323,7 @@ export default function WeekActivity() {
             <IconSymbol
               size={iconSize}
               name="flame.fill"
-              color={Colors[colorScheme ?? "light"].best}
+              color={StaticColors.best}
             />
             <Text style={styles.bestText}>
               {bestDayTotals.calories} Calories
@@ -330,7 +333,7 @@ export default function WeekActivity() {
             <IconSymbol
               size={iconSize}
               name="stopwatch"
-              color={Colors[colorScheme ?? "light"].best}
+              color={StaticColors.best}
             />
             <Text style={styles.bestText}>{bestDayTotals.time} Minutes</Text>
           </View>

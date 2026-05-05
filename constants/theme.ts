@@ -5,14 +5,17 @@
 
 import { Platform } from "react-native";
 
-const best = "#fbf318";
+export const StaticColors = {
+  best: "#fbf318",
+  starYellow: "#d4cc30",
+  levelOrange: "#cc8743",
+};
 
 export const Colors = {
   light: {
     text: "#000000",
     textOpposite: "#ffffff",
     textHighlight: "#d33adc",
-    best: best,
     mainBackground: "#cfc6dd",
     contentBackground: "#bdaad8",
     contentBorder: "#8c75a1",
@@ -24,7 +27,6 @@ export const Colors = {
     text: "#ffffff",
     textOpposite: "#000000",
     textHighlight: "#f985ff",
-    best: best,
     mainBackground: "#564b67",
     contentBackground: "#74599b",
     contentBorder: "#3e3857",
