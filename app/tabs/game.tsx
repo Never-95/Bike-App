@@ -12,7 +12,7 @@ export default function GameScreen() {
   const colorScheme = useColorScheme();
 
   const commonCards: Card[] = [
-    { name: "Walker", powerlevel: 5, rarity: "Common" },
+    { name: "Trek Marlin", powerlevel: 5, rarity: "Common" },
     { name: "Jogger", powerlevel: 7, rarity: "Common" },
     { name: "Sprinter", powerlevel: 9, rarity: "Common" },
   ];
